@@ -31,7 +31,7 @@ def clear_screen():
 
 # Try to establish database connection first, print a message and quit if unable
 try:
-    conn = psycopg2.connect("dbname='cards' user='py_carddb' host='localhost' port='5432' password='fuckyou'")
+    conn = psycopg2.connect("dbname='cards' user='py_carddb' host='localhost' port='5432' password='p@ssW0rD'")
     clear_screen()
     print('\n     <<< Database connection established! >>>\n')
     print('             Welcome to CardDB v1.4')
@@ -129,7 +129,6 @@ def validate_date(inp):
     # Form validation for date columns
     if inp == 'Q' or inp == 'q':
         return 'Q'
-        
     fmt = '%Y-%m-%d'
     try:
         datetime.datetime.strptime(inp, fmt)
