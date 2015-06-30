@@ -511,9 +511,9 @@ def search():
     
     # Check for empty column input
     if col_choice == '':
-            clear_screen()
-            message = '\n     <<< Empty column input >>>\n'
-            main_menu()
+        clear_screen()
+        message = '\n     <<< Empty column input >>>\n'
+        main_menu()
     
     # Make sure only 1 or 2 columns are elected
     if len(col_choice) > 2:
