@@ -6,8 +6,11 @@
 ###                                          CardDB version 1.4                                         ###
 ###                                            April 17, 2015                                           ###
 ###                                                                                                     ###
-###              A simple, yet powerful database CRUD application to store baseball card records.       ###
+###              A simple, yet powerful database application to store baseball card records.            ###
 ###          Written in Python 3.4, with the psycopg v2.6 library for PostgreSQL v9.4 connection.       ###
+###                                                                                                     ###
+###                                     Copyright 2015 Brian Hartley                                    ###
+###                                         All rights reserved.                                        ###
 ###                                                                                                     ###
 ###                                www.bhartley.com  |  brian@bhartley.com                              ###
 ###                                                                                                     ###
@@ -31,7 +34,7 @@ def clear_screen():
 
 # Try to establish database connection first, print a message and quit if unable
 try:
-    conn = psycopg2.connect("dbname='cards' user='py_carddb' host='localhost' port='5432' password='p@ssW0rD'")
+    conn = psycopg2.connect("dbname='cards' user='py_carddb' host='localhost' port='5432' password='password'")
     clear_screen()
     print('\n     <<< Database connection established! >>>\n')
     print('             Welcome to CardDB v1.4')
@@ -47,7 +50,7 @@ cur = conn.cursor()
 message = ''
 add_data = {}
 
-columns_actual = {'i': 'id', 's': 'sport', 'l': 'lastName', 'f': 'firstName', 'y': 'year', 't': 'team', 
+columns_actual = {'i': 'ID', 's': 'sport', 'l': 'lastName', 'f': 'firstName', 'y': 'year', 't': 'team', 
             'c': 'company', 'v': 'valueEst', 'd': 'saleDate', 'p': 'salePrice'}
 
 columns_disp = {'i': 'ID', 's': 'sport', 'l': 'last name', 'f': 'first name', 'y': 'year', 't': 'team', 
@@ -129,6 +132,7 @@ def validate_date(inp):
     # Form validation for date columns
     if inp == 'Q' or inp == 'q':
         return 'Q'
+        
     fmt = '%Y-%m-%d'
     try:
         datetime.datetime.strptime(inp, fmt)
@@ -472,7 +476,7 @@ def add_card():
                         add_data)
     except:
         clear_screen()
-        print('\n     <<< Fatal error. >>>\n')
+        print('\n     <<< Fatal error. See database logs for info. >>>\n')
         cur.close()
         conn.close()
         quit()
@@ -511,9 +515,9 @@ def search():
     
     # Check for empty column input
     if col_choice == '':
-        clear_screen()
-        message = '\n     <<< Empty column input >>>\n'
-        main_menu()
+            clear_screen()
+            message = '\n     <<< Empty column input >>>\n'
+            main_menu()
     
     # Make sure only 1 or 2 columns are elected
     if len(col_choice) > 2:
@@ -591,6 +595,7 @@ def search():
                 message = '\n     <<< Invalid search terms >>>'
                 main_menu()
 
+
     # Columns and search terms are valid, build search query
     if len(col_choice) == 1:
         s_query = """SELECT * FROM public.cardinfo WHERE "{}" {} '{}';"""\
@@ -608,7 +613,7 @@ def search():
         cur.execute(s_query)
     except:
         clear_screen()
-        print('\n     <<< Fatal error. >>>\n')
+        print('\n     <<< Fatal error. Check the database logs for info. >>>\n')
         cur.close()
         conn.close()
         quit()
@@ -645,7 +650,7 @@ def search():
     if len(results) != 0:
         print('\n')
         for row in results:
-            res.add_row([row[8], row[0], row[1], row[2], row[3], row[9], row[3], row[5], row[6], row[7]])
+            res.add_row([row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9]])
         results_table = res.draw()
         print(results_table)
 
@@ -663,7 +668,7 @@ def edit_card():
     print('\n     <<< EDIT OPTIONS >>>')
     id_choice = remove_special(input('\n Enter \'ID\' of card you wish to edit: ').replace(' ','').lower().strip())
     if validate_id_int(id_choice) == True:
-        id_query = """SELECT * FROM public.cardinfo WHERE ID = {};""".format(id_choice)
+        id_query = """SELECT * FROM public.cardinfo WHERE "ID" = {};""".format(id_choice)
     else:
         clear_screen()
         print('\n     <<< Invalid ID >>>')
@@ -692,7 +697,7 @@ def edit_card():
 
     # Print results table
     print('\n')
-    res.add_row([results[8], results[0], results[1], results[2], results[3], results[9], results[3], results[5], results[6], results[7]])
+    res.add_row([results[0], results[1], results[2], results[3], results[4], results[5], results[6], results[7], results[8], results[9]])
     results_table = res.draw()
     print(results_table)
 
@@ -761,7 +766,7 @@ def edit_card():
                 main_menu()
 
     # Build query and execute
-    e_query = """UPDATE public.cardinfo SET "{}" = '{}' WHERE ID = {};""".format(columns_actual[ecol_choice], edit, id_choice)
+    e_query = """UPDATE public.cardinfo SET "{}" = '{}' WHERE "ID" = {};""".format(columns_actual[ecol_choice], edit, id_choice)
 
     message = '\n At card ID: {}, \'{}\' will be updated to \'{}.\''.format(id_choice, columns_disp[ecol_choice], edit)
 
@@ -790,7 +795,7 @@ def vend_card():
     print('\n     <<< VEND OPTIONS >>>')
     id_choice = remove_special(input('\n Enter \'ID\' of card you wish to vend: ').replace(' ','').lower().strip())
     if validate_id_int(id_choice) == True:
-        id_query = """SELECT * FROM public.cardinfo WHERE ID = {};""".format(id_choice)
+        id_query = """SELECT * FROM public.cardinfo WHERE "ID" = {};""".format(id_choice)
     elif id_choice == 'q':
         clear_screen()
         print('\n     <<< Vend action canceled >>>')
@@ -823,7 +828,7 @@ def vend_card():
 
     # Print results table
     print('\n')
-    res.add_row([results[8], results[0], results[1], results[2], results[3], results[9], results[3], results[5], results[6], results[7]])
+    res.add_row([results[0], results[1], results[2], results[3], results[4], results[5], results[6], results[7], results[8], results[9]])
     results_table = res.draw()
     print(results_table)
     
@@ -858,7 +863,7 @@ def vend_card():
     message = 'The card at ID {} was sold on {} for a price of ${}.'.format(id_choice, v_date, s_price)
     
     # UPDATE query
-    v_query = """UPDATE public.cardinfo SET "saleDate" = '{}', "salePrice" = {} WHERE ID = {};""".format(v_date, s_price, id_choice)
+    v_query = """UPDATE public.cardinfo SET "saleDate" = '{}', "salePrice" = {} WHERE "ID" = {};""".format(v_date, s_price, id_choice)
 
     try:
         cur.execute(v_query)
@@ -914,7 +919,7 @@ def delete_card():
 
     # Print results table
     print('\n')
-    res.add_row([results[8], results[0], results[1], results[2], results[3], results[9], results[3], results[5], results[6], results[7]])
+    res.add_row([results[0], results[1], results[2], results[3], results[4], results[5], results[6], results[7], results[8], results[9]])
     results_table = res.draw()
     print(results_table)
     
@@ -928,7 +933,7 @@ def delete_card():
         cur.execute(d_query)
     except:
         clear_screen()
-        print('\n     <<< Fatal error. >>>\n')
+        print('\n     <<< Fatal error. See the database logs for info. >>>\n')
         cur.close()
         conn.close()
         quit()
