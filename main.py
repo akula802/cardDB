@@ -4,7 +4,7 @@
 ###########################################################################################################
 ###                                                                                                     ###
 ###                                          CardDB version 1.4                                         ###
-###                                            April 17, 2015                                           ###
+###                                             July 17, 2015                                           ###
 ###                                                                                                     ###
 ###              A simple, yet powerful database application to store baseball card records.            ###
 ###          Written in Python 3.4, with the psycopg v2.6 library for PostgreSQL v9.4 connection.       ###
