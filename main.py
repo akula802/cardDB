@@ -613,7 +613,7 @@ def search():
         cur.execute(s_query)
     except:
         clear_screen()
-        print('\n     <<< Fatal error. Check the database logs for info. >>>\n')
+        print('\n     <<< Fatal error. See the database logs for info. >>>\n')
         cur.close()
         conn.close()
         quit()
@@ -774,7 +774,7 @@ def edit_card():
         cur.execute(e_query)
     except:
         clear_screen()
-        print('\n     <<< Fatal error. >>>\n')
+        print('\n     <<< Fatal error. See database logs for info. >>>\n')
         cur.close()
         conn.close()
         quit()
@@ -869,7 +869,7 @@ def vend_card():
         cur.execute(v_query)
     except:
         clear_screen()
-        print('\n     <<< Fatal error. >>>\n')
+        print('\n     <<< Fatal error. See the database logs for info. >>>\n')
         cur.close()
         conn.close()
         quit()
