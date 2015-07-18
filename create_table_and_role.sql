@@ -22,15 +22,25 @@ WITH (
   OIDS=FALSE
 );
 
-/* Ensures postgres is the table owner and adds a user fo the CardDB script */
-/* You must grant your script permission to read and write to the table */
-/* Also allows for different scripts to run with different permissions */
-
+/* Ensures postgres is the table owner (shouldn't really be necessary) */
 ALTER TABLE cardinfo
   OWNER TO postgres;
 GRANT ALL ON TABLE cardinfo TO postgres;
+
+
+/* -------------------------------------------------------------------- */
+
+
+/* Creating roles is like creating users in older versions of Postgre */
+/* My Python script roles start with 'py_' so I can track them */
+
+
+/* Create a role with a password (encrypted by default), valid across entire database cluster*/
+/* But you must grant permissions on a per-database or per-table level */
+/* This allows scripts to run with different permissions in different locations*/
+CREATE ROLE py_carddb WITH PASSWORD 'password';
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE cardinfo TO py_carddb;
-/* You must explicitly grant the script permission to 'use' the serial sequence */
+/* You must ALSO explicitly grant the script permission to 'use' the serial sequence */
 GRANT USAGE, SELECT ON SEQUENCE "cardinfo_ID_seq" TO py_carddb;
 
 
@@ -38,5 +48,5 @@ GRANT USAGE, SELECT ON SEQUENCE "cardinfo_ID_seq" TO py_carddb;
 
 
 /* 'Insert' syntax and test to insert the first row */
-INSERT INTO cardinfo (sport, "lastName", "firstName", year, team, company) 
+INSERT INTO cardinfo (sport, "lastName", "firstName", year, team, company)
 	VALUES('Baseball', 'Hartley', 'Brian', 2015, 'Twins', 'Topps')
