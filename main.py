@@ -169,7 +169,7 @@ def validate_id_int(inp):
     # Validate input for ID field
     try:
         xx = int(inp)
-        if xx in range(1, 1000):
+        if xx in range(0, 1001):
             return True
         else:
             return False
