@@ -49,4 +49,4 @@ GRANT USAGE, SELECT ON SEQUENCE "cardinfo_ID_seq" TO py_carddb;
 
 /* 'Insert' syntax and test to insert the first row */
 INSERT INTO cardinfo (sport, "lastName", "firstName", year, team, company)
-	VALUES('Baseball', 'Smith', 'Bobby', 2015, 'Twins', 'Topps')
+	VALUES('Baseball', 'Smith', 'Bobby', 1984, 'Twins', 'Topps')
