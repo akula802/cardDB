@@ -5,7 +5,7 @@ Originally designed around a baseball card collection in a single table, CardDB 
 
 With CardDB, you can:
 
-- Search records by up to two column fields simutaneously
+- Search records by up to two column fields simultaneously
 - Add records to the database
 - Remove records from the database
 - Modify existing records
