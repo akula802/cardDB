@@ -886,7 +886,7 @@ def delete_card():
     print('\n     <<< DELETE OPTIONS >>>')
     id_choice = remove_special(input('\n Enter \'ID\' of card you wish to delete: ').replace(' ','').lower().strip())
     if validate_id_int(id_choice) == True:
-        id_query = """SELECT * FROM public.cardinfo WHERE ID = {};""".format(id_choice)
+        id_query = """SELECT * FROM public.cardinfo WHERE "ID" = {};""".format(id_choice)
     elif id_choice == 'q':
         clear_screen()
         print('\n     <<< Delete action canceled >>>')
@@ -927,7 +927,7 @@ def delete_card():
     message = '\n The card at ID {} will be PERMANENTLY DELETED from the database.'.format(id_choice)
     
     # DELETE query
-    d_query = """DELETE from public.cardinfo WHERE id = {};""".format(id_choice)
+    d_query = """DELETE from public.cardinfo WHERE "ID" = {};""".format(id_choice)
 
     try:
         cur.execute(d_query)
