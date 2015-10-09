@@ -15,3 +15,9 @@ All input is validated to provide a smooth user experience and protect against S
 CardDB is a written in a more 'functional' programming style, in that there are no classes. There is proably a way to write this in a more object-oriented style as well, perhaps that will be another experiment in the future.
 
 To use this program, you must have PostgreSQL installed, and a database to hold the table that the script uses. Refer to the create_table_and_role.sql file to get the table created and enable the script to interact with it. Have fun!
+
+LINKS:
+
+psycopg2: http://initd.org/psycopg/
+
+texttable: https://pypi.python.org/pypi/texttable
