@@ -515,9 +515,9 @@ def search():
     
     # Check for empty column input
     if col_choice == '':
-            clear_screen()
-            message = '\n     <<< Empty column input >>>\n'
-            main_menu()
+        clear_screen()
+        message = '\n     <<< Empty column input >>>\n'
+        main_menu()
     
     # Make sure only 1 or 2 columns are elected
     if len(col_choice) > 2:
@@ -680,11 +680,12 @@ def edit_card():
     
     # Check to see if given ID matches a card in the database
     try:
+        # Will fail if no record returned
         aa = len(results)
     except:
-            clear_screen()
-            print('\n     <<< No card with that ID exists. >>>\n')
-            main_menu()
+        clear_screen()
+        print('\n     <<< No card with that ID exists. >>>\n')
+        main_menu()
 
     # Build table of search results
     res = tt.Texttable()
@@ -813,9 +814,9 @@ def vend_card():
     try:
         aa = len(results)
     except:
-            clear_screen()
-            print('\n     <<< No card with that ID exists. >>>\n')
-            main_menu()
+        clear_screen()
+        print('\n     <<< No card with that ID exists. >>>\n')
+        main_menu()
 
     # Build table of search results
     res = tt.Texttable()
@@ -904,9 +905,9 @@ def delete_card():
     try:
         aa = len(results)
     except:
-            clear_screen()
-            print('\n     <<< No card with that ID exists. >>>\n')
-            main_menu()
+        clear_screen()
+        print('\n     <<< No card with that ID exists. >>>\n')
+        main_menu()
 
     # Build table of search results
     res = tt.Texttable()
