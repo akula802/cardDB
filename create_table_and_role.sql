@@ -3,7 +3,11 @@
 /* Postgre expects lowercase and converts queries unless you "double-quote" them in your script */
 /* Without the quotes on mixed-case column names, you get fatal 'column not found' errors */
 
-CREATE TABLE cardinfo
+/* My 'cards' database has two schemas, 'public' which is a default, and 'testing' */
+/* This enables me to clone the 'public' table(s) into 'testing' to test commands etc. */
+/* You can ignore or delete the 'public.' prefixes if you don't want to have multiple schemas */
+
+CREATE TABLE public.cardinfo
 (
   "ID" serial PRIMARY KEY,
   sport character varying(50) NOT NULL,
@@ -23,9 +27,9 @@ WITH (
 );
 
 /* Ensures postgres is the table owner (shouldn't really be necessary) */
-ALTER TABLE cardinfo
+ALTER TABLE public.cardinfo
   OWNER TO postgres;
-GRANT ALL ON TABLE cardinfo TO postgres;
+GRANT ALL ON TABLE public.cardinfo TO postgres;
 
 
 /* -------------------------------------------------------------------- */
@@ -35,12 +39,13 @@ GRANT ALL ON TABLE cardinfo TO postgres;
 /* My Python script roles start with 'py_' so I can track them */
 
 
-/* Create a role with a password (encrypted by default), valid across entire database cluster*/
-/* But you must grant permissions on a per-database or per-table level */
-/* This allows scripts to run with different permissions in different locations*/
-CREATE ROLE py_carddb WITH PASSWORD 'password';
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE cardinfo TO py_carddb;
-/* You must ALSO explicitly grant the script permission to 'use' the serial sequence */
+/* Create a user with a password that this app uses to connect to and alter the database */
+/* You must grant permissions on a database, schema, and table level */
+CREATE USER py_carddb WITH PASSWORD 'password';
+GRANT CONNECT ON DATABASE cards to py_carddb;
+GRANT USAGE ON SCHEMA public TO py_carddb;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE public.cardinfo TO py_carddb;
+/* You must ALSO explicitly grant the script permission to 'use' the serial sequence (PK) */
 GRANT USAGE, SELECT ON SEQUENCE "cardinfo_ID_seq" TO py_carddb;
 
 
@@ -48,5 +53,5 @@ GRANT USAGE, SELECT ON SEQUENCE "cardinfo_ID_seq" TO py_carddb;
 
 
 /* 'Insert' syntax and test to insert the first row */
-INSERT INTO cardinfo (sport, "lastName", "firstName", year, team, company)
+INSERT INTO public.cardinfo (sport, "lastName", "firstName", year, team, company)
 	VALUES('Baseball', 'Smith', 'Bobby', 1984, 'Twins', 'Topps')
